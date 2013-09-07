@@ -1,17 +1,35 @@
 <?php
 
 
+include "glitch_lib.php";
+
 $code = $_GET["code"];
 $appId = 3863760;
 $appSecret = "IxjyxOcG0IOdbYnVMX4v";
 $siteUrl = "http://glitch.loc";
 
 if($code) {
-	$token = VKauth($appId, $appSecret, $code, $siteUrl);
-	$data = getData(request("https://api.vk.com/method/friends.get?order=random&count=5&fields=photo_100&v=5.0&access_token=".$token));
+	/*$token = VKauth($appId, $appSecret, $code, $siteUrl);
+	$uid = request("https://api.vk.com/method/users.get?v=5.0&access_token=".$token)->{"response"}[0]->{"id"};
+	$data = getData($uid, request("https://api.vk.com/method/friends.get?order=random&count=4&fields=photo_max&v=5.0&access_token=".$token));
+	$wall = "";
+	$arr = array();
+
+	foreach ($data as $i) {
+		$arr[] = glitch(__DIR__."/tmp/".$i["name"]);
+		$wall .= "<a href=\"http://vk.com/id".$i["id"]."\"><img src=\"/tmp/".$i["name"]."\" class=\"wall-img\"></a>";
+	}
+	tile($arr, 150, 2, 5, __DIR__."/tmp/".$uid."-wall.jpg");
+	include "wall.html";*/
+	tile(array(imagecreatefromjpeg(__DIR__."/tmp/100665466-13178742.jpg"),
+				imagecreatefromjpeg(__DIR__."/tmp/100665466-100730839.jpg"),
+				imagecreatefromjpeg(__DIR__."/tmp/100665466-168240269.jpg"),
+				imagecreatefromjpeg(__DIR__."/tmp/100665466-180607916.jpg")), 150, 2, 5, __DIR__."/tmp/".$uid."-wall.jpg");
+
 } else {
 	readfile("main.html");
 }
+
 
 
 function request($url) {
@@ -21,6 +39,7 @@ function request($url) {
 	curl_setopt($cr, CURLOPT_HEADER, 0);
 	$response = curl_exec($cr);
 	curl_close($cr);
+
 	return json_decode($response);
 }
 
@@ -30,13 +49,14 @@ function VKauth($appId, $appSecret, $code, $siteUrl) {
 	return $response->{"access_token"};
 }
 
-function getData($obj) {
+function getData($uid, $obj) {
 	$ret = array();
 
 	$arr = $obj->{"response"}->{"items"};
 	foreach ($arr as $val) {
-		$ret[] = array("id" => $val->{"id"}, "photo" => $val->{"photo_100"});
-		download($val->{"photo_100"}, $val->{"id"});
+		$name = $uid."-".$val->{"id"}.substr($val->{"photo_max"}, -4);
+		$ret[] = array("id" => $val->{"id"}, "name" => $name);
+		download($val->{"photo_max"}, $name);
 	}
 
 	return $ret;

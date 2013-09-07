@@ -35,3 +35,38 @@ button:hover {
 button:active {
 	line-height: 50px;
 }
+
+.loading {
+	display: inline-block;
+	visibility: hidden;
+	position: absolute;
+	top: 50%;
+	opacity: 0;
+
+	
+	width: 300px;
+	height: 100px;
+
+	margin: 50px -150px;
+}
+
+.loading > p {
+	font-weight: bold;
+	font-family: sans-serif;
+	color: #efefef;
+	text-shadow: 0 1px 3px black, 0 0 1px black;
+	font-size: 40px;
+}
+
+.wall {
+	width: 850px;
+	margin: 0 auto 50px;
+}
+
+.wall-img {
+	margin: 5px;
+}
+
+a img {
+	border: none;
+}
