@@ -28,12 +28,26 @@ body {
 	font-family: sans-serif;
 }
 
-button:hover {
+.button:hover {
 	background: url("../img/b.gif");
 }
 
-button:active {
+.button:active {
 	line-height: 50px;
+}
+
+.dis {
+	background: #888;
+	color: #999;
+	font-size: 25px;
+}
+
+.dis:hover {
+	background: #888;
+}
+
+.dis:active {
+	background: #888;
 }
 
 .loading {
@@ -63,7 +77,7 @@ button:active {
 	margin: 0 auto 50px;
 }
 
-.wall-img {
+.wall img {
 	margin: 5px;
 }
 
