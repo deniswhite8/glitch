@@ -1,6 +1,5 @@
 <?php
 
-
 include "glitch_lib.php";
 
 $code = $_GET["code"];
@@ -9,7 +8,7 @@ $appSecret = "IxjyxOcG0IOdbYnVMX4v";
 $siteUrl = "http://glitch.loc";
 
 if($code) {
-	/*$token = VKauth($appId, $appSecret, $code, $siteUrl);
+	$token = VKauth($appId, $appSecret, $code, $siteUrl);
 	$uid = request("https://api.vk.com/method/users.get?v=5.0&access_token=".$token)->{"response"}[0]->{"id"};
 	$data = getData($uid, request("https://api.vk.com/method/friends.get?order=random&count=4&fields=photo_max&v=5.0&access_token=".$token));
 	$wall = "";
@@ -20,11 +19,7 @@ if($code) {
 		$wall .= "<a href=\"http://vk.com/id".$i["id"]."\"><img src=\"/tmp/".$i["name"]."\" class=\"wall-img\"></a>";
 	}
 	tile($arr, 150, 2, 5, __DIR__."/tmp/".$uid."-wall.jpg");
-	include "wall.html";*/
-	tile(array(imagecreatefromjpeg(__DIR__."/tmp/100665466-13178742.jpg"),
-				imagecreatefromjpeg(__DIR__."/tmp/100665466-100730839.jpg"),
-				imagecreatefromjpeg(__DIR__."/tmp/100665466-168240269.jpg"),
-				imagecreatefromjpeg(__DIR__."/tmp/100665466-180607916.jpg")), 150, 2, 5, __DIR__."/tmp/".$uid."-wall.jpg");
+	include "wall.html";
 
 } else {
 	readfile("main.html");
