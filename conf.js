@@ -1,1 +1,0 @@
-var siteUrl = "http://glitch.loc";

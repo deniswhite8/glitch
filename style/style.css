@@ -6,10 +6,7 @@ body {
 	background-image: url("../img/bg.png");
 }
 
-.button {
-	position: absolute;
-	top: 50%;
-
+button {
 	font-variant: small-caps;
 
 	color: #efefef;
@@ -22,17 +19,29 @@ body {
 	font-size: 40px;
 	line-height: 40px;
 
-	margin: -25px -90px;
-
 	font-weight: bold;
 	font-family: sans-serif;
+
+	cursor: pointer;
 }
 
-.button:hover {
+.button {
+	position: absolute;
+	top: 50%;
+
+	margin: -25px -90px;
+}
+
+.share-button {
+	margin: 0 auto 50px;
+	display: block;
+}
+
+button:hover {
 	background: url("../img/b.gif");
 }
 
-.button:active {
+button:active {
 	line-height: 50px;
 }
 

@@ -1,8 +1,11 @@
 <?php
+//error_reporting(E_ALL);
+//ini_set('display_errors', 1);
+
 	include "glitch_lib.php";
 
 	$data = $_POST["data"];
-	$tmp = "/tmp_img/";
+	$tmp = "/../tmp_img/";
 	$img_tmp = __DIR__.$tmp;
 	$img_arr = array();
 	$new_size = 150;

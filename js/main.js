@@ -1,6 +1,7 @@
 $(document).ready(function() {
 
-	var appId = 3863760;
+	var appId = 3863760,
+		siteUrl = "http://glitch.loc";
 
 	var button = $("#button"),
 		loading = $("#loading"),
@@ -9,7 +10,7 @@ $(document).ready(function() {
 
 	function getWall(parent, conf) {
 		conf.mas.forEach(function(i) {
-			var img = $("<a href=\"http://vk.com/id"+i.id+"\"><img src=\""+i.photo+"\">");
+			var img = $("<a target=\"_blank\" href=\"http://vk.com/id"+i.id+"\"><img src=\""+i.photo+"\">");
 			parent.append(img);
 		});
 	}
