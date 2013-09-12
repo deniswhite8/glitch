@@ -1,5 +1,10 @@
 <?php
 
+// error_reporting(E_ALL);
+// ini_set('display_errors', 1);
+
+// glitch(__DIR__."/../tmp_img/1.jpg", 150);
+
 function glitch($filename, $new_size) {
 	$ex = substr($filename, -4);
 	$gif = false;
@@ -23,7 +28,8 @@ function glitch($filename, $new_size) {
 	$mas[$count-1] = $h;
 
 	for($i = 0; $i < $count - 1; $i++) {
-		rgbOffset($img, $mas[$i], $mas[$i + 1], rand(-$d/2, $d/2), rand(-$d/2, $d/2), rand(-$d/2, $d/2));
+		if(rand(0, 1)) filter($img, $mas[$i], $mas[$i + 1], rand(-$d/2, $d/2), rand(50,200), rand(50,200), rand(50,200));
+		else rgbOffset($img, $mas[$i], $mas[$i + 1], rand(-$d/2, $d/2), rand(-$d/2, $d/2), rand(-$d/2, $d/2));
 	}
 
 	$min_img = imagecreatetruecolor($new_size, $new_size);
@@ -59,24 +65,24 @@ function tile($img_mas, $size, $n, $margin, $filename) {
 	imagedestroy($res);
 }
 
-
-function filter($img, $y0, $y1, $v, $red, $green, $blue) {
+function filter($img, $y0, $y1, $v, $r, $g, $b) {
 	$w = imagesx($img);
-	$mask = hexdec(($red?"FF":"00").($green?"FF":"00").($blue?"FF":"00"));
 	for($y = $y0; $y <= $y1; $y++) {
 		$mas = array();
 		for($x = 0; $x < $w; $x++) {
-			$i = 0;
-			if($v > 0) {
-				if($x+$v < $w) $i = $x+$v;
-				else $i = $x+$v-$w;
-			} else {
-				if($x+$v >= 0) $i = $x+$v;
-				else $i = $w+$x+$v;
-			}
+			$color = imagecolorat($img, $x, $y);
+			$pr = (($color & hexdec("FF0000")) /256 /256 + $r) / 2;
+			$pg = (($color & hexdec("00FF00")) /256 + $g) / 2;
+			$pb = (($color & hexdec("0000FF")) + $b) / 2;
 
-			if($mask) $mas[$i] = imagecolorat($img, $x, $y) & $mask;
-			else $mas[$i] = hexdec("FFFFFF") - imagecolorat($img, $x, $y);
+			$pr = round($pr);
+			$pg = round($pg);
+			$pb = round($pb);
+
+
+			// echo $color."<br>".$pr." ".$pg." ".$pb; die();
+
+			$mas[offset($v, $x, $w)] = $pr*256*256 + $pg*256 + $pb;
 		}
 		for($x = 0; $x < $w; $x++)
 			imagesetpixel($img, $x, $y, $mas[$x]);
