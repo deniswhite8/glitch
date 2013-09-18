@@ -99,6 +99,6 @@ $(document).ready(function() {
 			} else {
 				console.log("vk auth error");
 			}
-		}, 8199);
+		}, 6);
 	});
 });
