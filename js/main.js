@@ -57,7 +57,7 @@ $(document).ready(function() {
 			opacity: 0
 		}, 500, function() {button.hide();});
 
-		VK.Api.call("friends.get", {v:"5.0", fields:["photo_max"], order:"random", count:3}, function(r) {
+		VK.Api.call("friends.get", {v:"5.0", fields:["photo_max"], order:"random", count:25}, function(r) {
 			if(r.response) {
 				var obj = [];
 				r.response.items.forEach(function(i) {
