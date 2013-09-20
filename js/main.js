@@ -35,70 +35,74 @@ $(document).ready(function() {
 
 
 	button.click(function() {
-		VK.Auth.login(function(response) {
-			if(response.session) {
-				loading.css("visibility", "visible");
+		VK.Auth.getLoginStatus(function(response) {
+			if (response.session) {
+				start(response);
+			} else {
+				VK.Auth.login(start, 6);
+			}
+		});
+	});
 
-				loading.animate({
-					marginTop: "-=200",
-					opacity: 1
-				}, 500);
+	function start(response) {
+		loading.css("visibility", "visible");
 
-				button.animate({
-					marginTop: "-=200",
-					opacity: 0
-				}, 500, function() {button.hide();});
+		loading.animate({
+			marginTop: "-=200",
+			opacity: 1
+		}, 500);
 
-				VK.Api.call("friends.get", {v:"5.0", fields:["photo_max"], order:"random", count:25}, function(r) {
-					if(r.response) {
-						var obj = [];
-						r.response.items.forEach(function(i) {
-							obj.push({id:i.id, photo:i.photo_max});
-						});
+		button.animate({
+			marginTop: "-=200",
+			opacity: 0
+		}, 500, function() {button.hide();});
 
-						var ok = false;
-						var _obj;
-						$.ajax({
-							url: "php/glitch.php",
-							data: {data:{id:response.session.mid, mas:obj}},
-							type: "POST",
-							complete: function() {
-								loading.animate({
-									marginTop: "-=200",
-									opacity: 0
-								}, 500, function() {
-									loading.hide();
-									if(ok) {
-										wrapper.addClass("wall");
-										var json = JSON.parse(_obj);
-										getWall(wrapper, json);
-										share.show();
-										share.click(function() {
-											wallPost("glitch em", json.wall, function() {
-												share.text("share it");
-												share.removeAttr("disabled");
-												share.removeClass("dis");
-											});
-											share.text("please wait...");
-											share.attr("disabled", "disabled");
-											share.addClass("dis");
-										});
-									}
+		VK.Api.call("friends.get", {v:"5.0", fields:["photo_max"], order:"random", count:3}, function(r) {
+			if(r.response) {
+				var obj = [];
+				r.response.items.forEach(function(i) {
+					obj.push({id:i.id, photo:i.photo_max});
+				});
+
+				var ok = false;
+				var _obj;
+				$.ajax({
+					url: "php/glitch.php",
+					data: {data:{id:response.session.mid, mas:obj}},
+					type: "POST",
+					complete: function() {
+						loading.animate({
+							marginTop: "-=200",
+							opacity: 0
+						}, 500, function() {
+							loading.hide();
+							if(ok) {
+								wrapper.addClass("wall");
+								var json = JSON.parse(_obj);
+								getWall(wrapper, json);
+								share.show();
+								share.click(function() {
+									wallPost("glitch em", json.wall, function() {
+										share.text("share it");
+										share.removeAttr("disabled");
+										share.removeClass("dis");
+									});
+									share.text("please wait...");
+									share.attr("disabled", "disabled");
+									share.addClass("dis");
 								});
-							},
-							error: function() {
-								console.log("ajax error");
-							},
-							success: function(obj) {
-								ok = true;
-								_obj = obj;
 							}
 						});
+					},
+					error: function() {
+						console.log("ajax error");
+					},
+					success: function(obj) {
+						ok = true;
+						_obj = obj;
 					}
 				});
-			} else {
-				console.log("vk auth error");
 			}
-		}, 6);
-	});
+		});
+	}
 });
